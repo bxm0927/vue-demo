@@ -9,7 +9,6 @@ pipeline {
 
   environment {
     REPO_URL = "git@github.com:bxm0927/vue-demo.git"
-    // BRANCH_NAME = "${BRANCH_NAME}"
     GIT_CREDENTIALS_ID = "7fad7afa-60d4-4fac-8a1d-c8e1831ebff7"
     ALIYUN_DOCKER_REGISTRY = 'https://registry.cn-shanghai.aliyuncs.com'
     ALIYUN_DOCKER_CREDENTIALS = "c8a0e8d9-2906-4ff1-8b89-49cdd18d73ec"
@@ -41,7 +40,7 @@ pipeline {
           manager.addShortText(version, "black", "#fbfbba", "1px", "#c7c777")
 
           docker.withRegistry(env.ALIYUN_DOCKER_REGISTRY, env.ALIYUN_DOCKER_CREDENTIALS) {
-            def customImage = docker.build("baixiaoming/vue-demo:${version} .")
+            def customImage = docker.build("baixiaoming/vue-demo:${version}")
             customImage.push()
             customImage.push('latest')
           }
