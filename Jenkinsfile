@@ -16,22 +16,19 @@ pipeline {
   }
 
   stages {
-    // stage('Pull Code') {
-    //   steps {
-    //     echo "======== Pulling Code ========"
-    //     git branch: "${BRANCH_NAME}", url: "${REPO_URL}", credentialsId: "${GIT_CREDENTIALS_ID}"
-    //     echo "代码git地址：" + "${REPO_URL}"
-    //     echo "分支名称：" + "${BRANCH_NAME}"
-    //   }
-    // }
+    stage('Pull Code') {
+      steps {
+        echo "================ Pulling Code ================"
+        echo "Git仓库地址：" + "${REPO_URL}"
+        echo "Git分支名称：" + "${BRANCH_NAME}"
+        git branch: "${BRANCH_NAME}", url: "${REPO_URL}", credentialsId: "${GIT_CREDENTIALS_ID}"
+      }
+    }
 
     stage('Build Image And Push Aliyun') {
       steps {
+        echo "================ Build Image And Push Aliyun ================"
         script {
-          sh "pwd"
-          sh "whoami"
-          sh "ls -l ./"
-
           // readJSON need **Pipeline Utility Steps** Plugin.
           def props = readJSON file: 'package.json'
           def version = "${props['version']}"
@@ -40,12 +37,11 @@ pipeline {
           }
           echo "Build Version Is " + version
 
-          // BUILD_VERSION = version
           // manager need **Groovy Postbuild** Plugin.
           manager.addShortText(version, "black", "#fbfbba", "1px", "#c7c777")
 
           docker.withRegistry(env.ALIYUN_DOCKER_REGISTRY, env.ALIYUN_DOCKER_CREDENTIALS) {
-            def customImage = docker.build("baixiaoming/vue-demo:${version}", "--build-arg NODE_ENV=${NODE_ENV} .")
+            def customImage = docker.build("baixiaoming/vue-demo:${version} .")
             customImage.push()
             customImage.push('latest')
           }
