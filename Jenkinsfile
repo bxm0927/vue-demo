@@ -10,7 +10,7 @@ pipeline {
     environment {
         REPO_URL = "git@github.com:bxm0927/vue-demo.git"
         BRANCH_NAME = "${BRANCH_NAME}"
-        PULL_KEY = "xiaoming.bai"
+        PULL_KEY = "7fad7afa-60d4-4fac-8a1d-c8e1831ebff7"
         // ALIYUN_DOCKER_CREDENTIALS = "ef67d595-5140-43c3-990b-a6e18e8a8bf3"
         // ALIYUN_DOCKER_REGISTRY = 'https://registry-vpc.cn-shanghai.aliyuncs.com'
     }
