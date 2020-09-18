@@ -30,6 +30,8 @@ pipeline {
                 script {
                     sh "ls -l ./"
 
+                    // Using **Pipeline Utility Steps** Plugin you can use the readJSON function.
+                    // https://plugins.jenkins.io/pipeline-utility-steps/
                     def props = readJSON file: 'package.json'
                     def version = "${props['version']}"
                     if(params.SNAPSHOT) {
@@ -38,12 +40,11 @@ pipeline {
                     echo "[CLINKS] Build Version Is " + version
 
                     BUILD_VERSION = version
+                    // manager need **Groovy Postbuild** Plugin
                     manager.addShortText(version, "black", "#fbfbba", "1px", "#c7c777")
 
                     docker.withRegistry(env.ALIYUN_DOCKER_REGISTRY, env.ALIYUN_DOCKER_CREDENTIALS) {
-
                         def customImage = docker.build("baixiaoming/vue-demo:${version}", "--build-arg NODE_ENV=${NODE_ENV} .")
-
                         customImage.push()
                         customImage.push('latest')
                     }
